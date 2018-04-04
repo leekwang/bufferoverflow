@@ -7,3 +7,33 @@ It explicitly gets buf, length of shellcode, EXEC, WRITE, READ as arguments, whi
 Now it has an exec privilege then it can be executed. 
 However, if we comment the function out it gives us segmentation fault because we don't have an exec privilege and violate the protection, and the kernel generates SIGSEGV.
 Also, it works at the heap instead of the stack so that we can say that it protects the heap memory, namely the the heap is declared non-executable, and we turned off the security functionality of Linux by using mprotect.
+
+
+MPROTECT(2)                                                                     Linux Programmer's Manual                                                                     MPROTECT(2)
+
+NAME
+       mprotect - set protection on a region of memory
+
+SYNOPSIS
+       #include <sys/mman.h>
+
+       int mprotect(void *addr, size_t len, int prot);
+
+DESCRIPTION
+       mprotect()  changes  protection  for  the calling process's memory page(s) containing any part of the address range in the interval [addr, addr+len-1].  addr must be aligned to a
+       page boundary.
+
+       If the calling process tries to access memory in a manner that violates the protection, then the kernel generates a SIGSEGV signal for the process.
+
+       prot is either PROT_NONE or a bitwise-or of the other values in the following list:
+
+       PROT_NONE  The memory cannot be accessed at all.
+
+       PROT_READ  The memory can be read.
+
+       PROT_WRITE The memory can be modified.
+
+       PROT_EXEC  The memory can be executed.
+
+RETURN VALUE
+       On success, mprotect() returns zero.  On error, -1 is returned, and errno is set appropriately.
