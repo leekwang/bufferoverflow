@@ -1,0 +1,400 @@
+Script started on Wed 04 Apr 2018 06:10:46 PM EDT
+lee2074@js-157-112:~/assignment3$ gcc -z execstack -fno-stack-protector attack.c -o attack
+attack.c: In function ‘main’:
+attack.c:46:7: warning: incompatible implicit declaration of built-in function ‘exit’ [enabled by default]
+       exit(0);
+       ^
+attack.c:50:14: warning: incompatible implicit declaration of built-in function ‘malloc’ [enabled by default]
+       buff = malloc(bsize); 
+              ^
+attack.c:51:12: warning: assignment makes pointer from integer without a cast [enabled by default]
+       addr = get_sp() -offset;
+            ^
+attack.c:52:7: warning: format ‘%x’ expects argument of type ‘unsigned int’, but argument 2 has type ‘long unsigned int’ [-Wformat=]
+       printf("\nStackpointer : 0x%x\n", get_sp());
+       ^
+attack.c:53:7: warning: format ‘%x’ expects argument of type ‘unsigned int’, but argument 2 has type ‘long long int *’ [-Wformat=]
+       printf("\nUsing address as guess for beginning of attack buffer: 0x%x\n", addr); 
+       ^
+attack.c:59:18: warning: assignment makes integer from pointer without a cast [enabled by default]
+       *(addr_ptr)=addr;
+                  ^
+attack.c:64:23: warning: assignment makes integer from pointer without a cast [enabled by default]
+       buff[bsize - 1] = (char*)NULL; 
+                       ^
+lee2074@js-157-112:~/assignment3$ gcc -z execstack 0[K-fno-stack-protector vuln.c -o vuln
+vuln.c: In function ‘dumb’:
+vuln.c:17:7: warning: assignment from incompatible pointer type [enabled by default]
+   hold=(int *)&test;
+       ^
+vuln.c:19:3: warning: format ‘%x’ expects argument of type ‘unsigned int’, but argument 2 has type ‘long long unsigned int’ [-Wformat=]
+   printf("\n\nValue of Test:%x",(unsigned long long)&test);
+   ^
+vuln.c:21:3: warning: format ‘%d’ expects argument of type ‘int’, but argument 2 has type ‘long unsigned int’ [-Wformat=]
+   printf("\nsize of value : %d\n", sizeof(unsigned long long));
+   ^
+vuln.c:22:3: warning: format ‘%x’ expects argument of type ‘unsigned int’, but argument 2 has type ‘long long unsigned int’ [-Wformat=]
+   printf("\nValue of filename[0]:%x\n",(unsigned long long)filename);
+   ^
+vuln.c:23:3: warning: format ‘%x’ expects argument of type ‘unsigned int’, but argument 2 has type ‘long long unsigned int’ [-Wformat=]
+   printf("\nValue of filename[1023]:%x\n", (unsigned long long)&(filename[1023]));
+   ^
+vuln.c: In function ‘main’:
+vuln.c:32:3: warning: format ‘%x’ expects argument of type ‘unsigned int’, but argument 2 has type ‘long long unsigned int’ [-Wformat=]
+   printf("\nHolding position : %x\n", (unsigned long long)holding);
+   ^
+vuln.c:33:3: warning: format ‘%x’ expects argument of type ‘unsigned int’, but argument 2 has type ‘long long unsigned int’ [-Wformat=]
+   printf("\nend of holding : %x\n", (unsigned long long)&(holding[9999]));
+   ^
+vuln.c:41:7: warning: format ‘%d’ expects argument of type ‘int’, but argument 2 has type ‘size_t’ [-Wformat=]
+       printf("\nLength of Input String:%d\n", strlen(string));
+       ^
+lee2074@js-157-112:~/assignment3$ 
+lee2074@js-157-112:~/assignment3$ 
+lee2074@js-157-112:~/assignment3$ ./attack 1048[K[K48 120000
+
+Stackpointer : 0xffffdd10
+
+Using address as guess for beginning of attack buffer: 0xfffe0850
+
+Holding position : ffffb270
+
+end of holding : ffffd97f
+
+Length of Input String:1046
+
+
+Value of Test:ffffb248
+size of value : 8
+
+Value of filename[0]:ffffae40
+
+Value of filename[1023]:ffffb23f
+
+You are going to need a buffer a little larger than:1032
+
+Segmentation fault (core dumped)
+lee2074@js-157-112:~/assignment3$ ./attack 1048 120000[K
+
+Stackpointer : 0xffffdd10
+
+Using address as guess for beginning of attack buffer: 0xffffae30
+
+Holding position : ffffb270
+
+end of holding : ffffd97f
+
+Length of Input String:1046
+
+
+Value of Test:ffffb248
+size of value : 8
+
+Value of filename[0]:ffffae40
+
+Value of filename[1023]:ffffb23f
+
+You are going to need a buffer a little larger than:1032
+
+Segmentation fault (core dumped)
+lee2074@js-157-112:~/assignment3$ ./attack 1048 12000[C[C[C[C[C[K[K21
+
+Stackpointer : 0xffffdd10
+
+Using address as guess for beginning of attack buffer: 0xffffae1b
+
+Holding position : ffffb270
+
+end of holding : ffffd97f
+
+Length of Input String:1046
+
+
+Value of Test:ffffb248
+size of value : 8
+
+Value of filename[0]:ffffae40
+
+Value of filename[1023]:ffffb23f
+
+You are going to need a buffer a little larger than:1032
+
+Segmentation fault (core dumped)
+lee2074@js-157-112:~/assignment3$ ./attack 1048 12021[K[K32
+
+Stackpointer : 0xffffdd10
+
+Using address as guess for beginning of attack buffer: 0xffffae10
+
+Holding position : ffffb270
+
+end of holding : ffffd97f
+
+Length of Input String:1046
+
+
+Value of Test:ffffb248
+size of value : 8
+
+Value of filename[0]:ffffae40
+
+Value of filename[1023]:ffffb23f
+
+You are going to need a buffer a little larger than:1032
+
+Segmentation fault (core dumped)
+lee2074@js-157-112:~/assignment3$ ./attack 1048 12032[C[C[C[C[C[C[C[1P 12032[1P 12032[1P 12032[1P 12032[1P12032[C 120321 120320 120326 120320 12032[C
+
+Stackpointer : 0xffffdd10
+
+Using address as guess for beginning of attack buffer: 0xffffae10
+
+Holding position : ffffb260
+
+end of holding : ffffd96f
+
+Length of Input String:1059
+
+
+Value of Test:ffffb238
+size of value : 8
+
+Value of filename[0]:ffffae30
+
+Value of filename[1023]:ffffb22f
+
+You are going to need a buffer a little larger than:1032
+
+Segmentation fault (core dumped)
+lee2074@js-157-112:~/assignment3$ ./attack 1060 12032[K[K16
+
+Stackpointer : 0xffffdd10
+
+Using address as guess for beginning of attack buffer: 0xffffae20
+
+Holding position : ffffb260
+
+end of holding : ffffd96f
+
+Length of Input String:1059
+
+
+Value of Test:ffffb238
+size of value : 8
+
+Value of filename[0]:ffffae30
+
+Value of filename[1023]:ffffb22f
+
+You are going to need a buffer a little larger than:1032
+
+Segmentation fault (core dumped)
+lee2074@js-157-112:~/assignment3$ ./attack 1060 12016[C[1P 12016[1P 12016[1P 12016[1P 120162 120160 120160 120160 12016
+
+Stackpointer : 0xffffdd10
+
+Using address as guess for beginning of attack buffer: 0xffffae20
+
+Holding position : ffffaeb0
+
+end of holding : ffffd5bf
+
+Length of Input String:1998
+
+
+Value of Test:ffffae88
+size of value : 8
+
+Value of filename[0]:ffffaa80
+
+Value of filename[1023]:ffffae7f
+
+You are going to need a buffer a little larger than:1032
+
+Segmentation fault (core dumped)
+lee2074@js-157-112:~/assignment3$ ./attack 2000 12016[K[K760[K[K[K[K764
+
+Stackpointer : 0xffffdd10
+
+Using address as guess for beginning of attack buffer: 0xffffab34
+
+Holding position : ffffaeb0
+
+end of holding : ffffd5bf
+
+Length of Input String:1998
+
+
+Value of Test:ffffae88
+size of value : 8
+
+Value of filename[0]:ffffaa80
+
+Value of filename[1023]:ffffae7f
+
+You are going to need a buffer a little larger than:1032
+
+Segmentation fault (core dumped)
+lee2074@js-157-112:~/assignment3$ ./attack 2000 12764[K[K[K584
+
+Stackpointer : 0xffffdd10
+
+Using address as guess for beginning of attack buffer: 0xffffabe8
+
+Holding position : ffffaeb0
+
+end of holding : ffffd5bf
+
+Length of Input String:1998
+
+
+Value of Test:ffffae88
+size of value : 8
+
+Value of filename[0]:ffffaa80
+
+Value of filename[1023]:ffffae7f
+
+You are going to need a buffer a little larger than:1032
+
+Segmentation fault (core dumped)
+lee2074@js-157-112:~/assignment3$ ./attack 2000 12584764
+
+Stackpointer : 0xffffdd10
+
+Using address as guess for beginning of attack buffer: 0xffffab34
+
+Holding position : ffffaeb0
+
+end of holding : ffffd5bf
+
+Length of Input String:1998
+
+
+Value of Test:ffffae88
+size of value : 8
+
+Value of filename[0]:ffffaa80
+
+Value of filename[1023]:ffffae7f
+
+You are going to need a buffer a little larger than:1032
+
+Segmentation fault (core dumped)
+lee2074@js-157-112:~/assignment3$ ./attack 2000 12764[C[1P64964[C[1P4[C4[C
+
+Stackpointer : 0xffffdd10
+
+Using address as guess for beginning of attack buffer: 0xffffaa80
+
+Holding position : ffffaeb0
+
+end of holding : ffffd5bf
+
+Length of Input String:1998
+
+
+Value of Test:ffffae88
+size of value : 8
+
+Value of filename[0]:ffffaa80
+
+Value of filename[1023]:ffffae7f
+
+You are going to need a buffer a little larger than:1032
+
+Segmentation fault (core dumped)
+lee2074@js-157-112:~/assignment3$ ./attack 2000 12944[K[K60
+
+Stackpointer : 0xffffdd10
+
+Using address as guess for beginning of attack buffer: 0xffffaa70
+
+Holding position : ffffaeb0
+
+end of holding : ffffd5bf
+
+Length of Input String:1998
+
+
+Value of Test:ffffae88
+size of value : 8
+
+Value of filename[0]:ffffaa80
+
+Value of filename[1023]:ffffae7f
+
+You are going to need a buffer a little larger than:1032
+
+Segmentation fault (core dumped)
+lee2074@js-157-112:~/assignment3$ ./attack 2000 12960
+
+Stackpointer : 0xffffdd10
+
+Using address as guess for beginning of attack buffer: 0xffffaa70
+
+Holding position : ffffaeb0
+
+end of holding : ffffd5bf
+
+Length of Input String:1998
+
+
+Value of Test:ffffae88
+size of value : 8
+
+Value of filename[0]:ffffaa80
+
+Value of filename[1023]:ffffae7f
+
+You are going to need a buffer a little larger than:1032
+
+Segmentation fault (core dumped)
+lee2074@js-157-112:~/assignment3$ ./attack 2000 12960
+
+Stackpointer : 0xffffdd10
+
+Using address as guess for beginning of attack buffer: 0xffffaa70
+
+Holding position : ffffaeb0
+
+end of holding : ffffd5bf
+
+Length of Input String:1998
+
+
+Value of Test:ffffae88
+size of value : 8
+
+Value of filename[0]:ffffaa80
+
+Value of filename[1023]:ffffae7f
+
+You are going to need a buffer a little larger than:1032
+
+Segmentation fault (core dumped)
+lee2074@js-157-112:~/assignment3$ ./attack 2000 12960
+
+Stackpointer : 0xffffdd10
+
+Using address as guess for beginning of attack buffer: 0xffffaa70
+
+Holding position : ffffaeb0
+
+end of holding : ffffd5bf
+
+Length of Input String:1998
+
+
+Value of Test:ffffae88
+size of value : 8
+
+Value of filename[0]:ffffaa80
+
+Value of filename[1023]:ffffae7f
+
+You are going to need a buffer a little larger than:1032
+
+Segmentation fault (core dumped)
+lee2074@js-157-112:~/assignment3$ exit
+Script done on Wed 04 Apr 2018 06:14:14 PM EDT

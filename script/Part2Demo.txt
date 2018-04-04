@@ -1,0 +1,44 @@
+Script started on Wed 04 Apr 2018 11:27:08 AM EDT
+lee2074@js-157-112:~/assignment3$ as pat[Krt2.s -o part2.o
+lee2074@js-157-112:~/assignment3$ ld part2,o[K[K.o -o part2
+lee2074@js-157-112:~/assignment3$ ./part2
+$ 
+$ 
+$ 
+$ exit
+lee2074@js-157-112:~/assignment3$ objdump -d part2
+
+part2:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+0000000000400078 <_start>:
+  400078:	48 31 c0             	xor    %rax,%rax
+  40007b:	50                   	push   %rax
+  40007c:	eb 10                	jmp    40008e <end>
+
+000000000040007e <hop>:
+  40007e:	5b                   	pop    %rbx
+  40007f:	ff 33                	pushq  (%rbx)
+  400081:	48 89 e7             	mov    %rsp,%rdi
+  400084:	48 89 c6             	mov    %rax,%rsi
+  400087:	48 89 c2             	mov    %rax,%rdx
+  40008a:	b0 3b                	mov    $0x3b,%al
+  40008c:	0f 05                	syscall 
+
+000000000040008e <end>:
+  40008e:	e8 eb ff ff ff       	callq  40007e <hop>
+  400093:	2f                   	(bad)  
+  400094:	62                   	(bad)  
+  400095:	69                   	.byte 0x69
+  400096:	6e                   	outsb  %ds:(%rsi),(%dx)
+  400097:	2f                   	(bad)  
+  400098:	73 68                	jae    400102 <end+0x74>
+	...
+lee2074@js-157-112:~/assignment3$ 
+lee2074@js-157-112:~/assignment3$ 
+lee2074@js-157-112:~/assignment3$ exit
+exit
+
+Script done on Wed 04 Apr 2018 11:27:57 AM EDT

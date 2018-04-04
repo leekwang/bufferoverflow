@@ -1,0 +1,11 @@
+Script started on Sat 31 Mar 2018 06:50:14 PM EDT
+lee2074@js-157-112:~/assignment3$ as part1.s -o part1.p[Ko
+lee2074@js-157-112:~/assignment3$ ld part1.o 0[K-o part1
+lee2074@js-157-112:~/assignment3$ ./part1
+$ exit
+lee2074@js-157-112:~/assignment3$ /bin/sh
+$ exit
+lee2074@js-157-112:~/assignment3$ exit
+exit
+
+Script done on Sat 31 Mar 2018 06:50:53 PM EDT
