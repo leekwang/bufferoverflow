@@ -1,0 +1,61 @@
+1. No compile option : gcc part3b.c -o part3b
+
+	Error: No Command Line arg for vuln was given
+
+
+	Value of Test:7ffc7b26a0a8
+	Value of filename[0]:7ffc7b26a0b0
+	The attack buffer is going to need to be a little bit bigger than:ffff800384d95f50
+
+The program does not open the shell due to canaries which makes the program unable to replace the return address by checking canary values. If the program violates it the program will be terminated.
+
+
+2. Stack protection turned off : gcc
+
+	Error: No Command Line arg for vuln was given
+
+
+	Value of Test:7fff56fad2a8
+	Value of filename[0]:7fff56facea0
+	The attack buffer is going to need to be a little bit bigger than:2b50
+	Segmentation fault (core dumped) 
+
+The program does not open the shell and shows Segmentation fault. The reason this happens is that even if there is no stack protection it still does not have an execution privilege. The default values of privilege is read-only. Therefore, when we try to execute the code in the stack it shows us Segmentation fault.
+
+
+
+3. An executable stack : gcc -z execstack part3b.c -o part3b
+
+	Error: No Command Line arg for vuln was given
+	
+	
+	Value of Test:7ffd1de85d08
+	Value of filename[0]:7ffd1de85d10
+	The attack buffer is going to need to be a little bit bigger than:ffff8002e217a2f0
+
+The program does not open the shell again. Even though we enabled an executable stack the canaries are still working so that the return address is irreplaceable.
+
+
+
+
+4. Both an executable stack and stack protection turned off : gcc -z execstack -fno-stack-protector part3b.c -o part3b
+
+
+	Error: No Command Line arg for vuln was given
+	
+	Value of Test:7fff89e7dac8
+	Value of filename[0]:7fff89e7d6c0
+	The attack buffer is going to need to be a little bit bigger than:2b50
+	$ 
+	$ 
+	$ 
+	$ ls
+	BufferRedirect64.c    Part1Demo.txt  Part3aDemo1.txt  Part3bDemo.txt  part1.o  part1_sample.s  	part2.o  part3apart3a_comment      part3btest
+	BufferRedirectViaStack64.c  Part2Demo   Part3aDemo2.txt  part1    part1.s  part2     part2.s  	part3a.cpart3a_commented_out  part3b.ctest.c
+	$ 
+	$ 
+	$ 
+	$ exit
+
+
+Finally, the program opens the shell. It does not make canary corruption, and the memory containing exploit code is executable.

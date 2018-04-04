@@ -1,0 +1,50 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+
+long long *hold;
+int i;
+
+
+unsigned long long get_sp(void) { 
+  __asm__("movq %rsp,%rax"); 
+} 
+
+void dumb(char *arg)
+{
+  long long *test;
+  hold=(int *)&test;
+  char filename[1024];   //Buffer to hold filename.
+  printf("\n\nValue of Test:%x",(unsigned long long)&test);
+  //printf("\nValue of test+1 : %x\n", (unsigned long long)(&test)++);
+  printf("\nsize of value : %d\n", sizeof(unsigned long long));
+  printf("\nValue of filename[0]:%x\n",(unsigned long long)filename);
+  printf("\nValue of filename[1023]:%x\n", (unsigned long long)&(filename[1023]));
+  printf("\nYou are going to need a buffer a little larger than:%d\n\n",(int)((long long)&test-(long long)filename));
+  strcpy (filename, arg);
+  return;
+}
+
+int main(int argc, char* argv[])
+{
+  char holding[10000];               //This is just here as a buffer to try and keep you from overwriting main's return address, and into safe pages
+  printf("\nHolding position : %x\n", (unsigned long long)holding);
+  printf("\nend of holding : %x\n", (unsigned long long)&(holding[9999]));
+  char *string;
+  string=argv[1];
+  unsigned long long stack; 
+  stack=get_sp();
+  
+    if(argc>1)                //Make sure that a filename was provided.
+    {
+      printf("\nLength of Input String:%d\n", strlen(string));
+      dumb(argv[1]);   
+    }
+    else
+      {
+	printf("\n\nError: No Command Line arg for vuln was given\n\n");
+	dumb("Useless Text");
+      }
+  return (0);
+}

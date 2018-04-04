@@ -1,0 +1,9 @@
+mprotect is a function derived from "sys/mman.h".
+mprotect is to change the access permissions for memory region.
+
+mprotect(buf, strlen(shellcode)+10, PROT_EXEC|PROT_WRITE PROT_READ);
+
+It explicitly gets buf, length of shellcode, EXEC, WRITE, READ as arguments, which means that the function gives read, write, exec privileges to the memory starting from buf and as long as the length of shellcode + 10.
+Now it has an exec privilege then it can be executed. 
+However, if we comment the function out it gives us segmentation fault because we don't have an exec privilege and violate the protection, and the kernel generates SIGSEGV.
+Also, it works at the heap instead of the stack so that we can say that it protects the heap memory, namely the the heap is declared non-executable, and we turned off the security functionality of Linux by using mprotect.
